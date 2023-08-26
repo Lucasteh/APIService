@@ -6,9 +6,13 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Http\Request;
+use Illuminate\Support\Str;
+use Carbon\Carbon;
 
 class LotteryTicketTransaction extends Model
 {
+
+    protected $fillable = ['trx_id','game_id','amount','ticket_date','draw_date','status','created_by'];
    
     static function getLotteryList($params){
         
@@ -29,7 +33,25 @@ class LotteryTicketTransaction extends Model
         return json_decode(json_encode($data,true));
     }
 
-    static function createLotteryTransaction(Request $request){
+    static function createLotteryTransaction($params,$admin_user_id){
+
+        do{
+            $trx_id = Str::random(40);
+            $transaction_id_exists = DB::table('lottery_ticket_transactions')->where('trx_id',$trx_id)->exists();
+
+        }while($transaction_id_exists);
+
+        LotteryTicketTransaction::create([
+            'trx_id' => $trx_id,
+            'game_id' => $params['game_id'],
+            'amount' => $params['amount'],
+            'ticket_date' => Carbon::now()->format('Y-m-d H:i:s'),
+            'draw_date' => $params['draw_date'],
+            'status' => 1,
+            'created_by' => $admin_user_id
+        ]);
+
+        return $trx_id;
         
     }
 

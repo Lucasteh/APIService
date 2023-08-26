@@ -91,14 +91,7 @@ class LotteryTicketTransactionController extends Controller
 				"body"=>[
                     'game_id' => 'required',
                     'amount' => 'required|numeric|between:0,9999999999',
-                    'draw_ticket' => 'date_format:Y-m-d|after:today',
-					// "period"=>"required",
-					// "m_id"=>"required",
-					// "a_id"=>"required",
-					// "currency"=>"required",
-					// "mu_membercode"=>"nullable",
-					// "game_code"=>"nullable",
-					// "page"=>"nullable|integer|min:1"
+                    'draw_date' => 'required|date_format:Y-m-d|after:today',
 				]
 			],
 			"response"=>'{"status": true,"code": 0,"message": "Ticket Has Generate with Transaction ID : XXXXXX"}'
@@ -110,16 +103,13 @@ class LotteryTicketTransactionController extends Controller
             if ($validator->fails()) {
 				throw new \Exception($validator->errors()->first(),1000);
 	        }
-            
-            $lottery_list = LotteryTicketTransaction::getTransactionList($request->all());
-            
-			$game = Gamelist::getGameList();
+
+			$transaction_id = LotteryTicketTransaction::createLotteryTransaction($request->all(),$request->user()->id);
 
 			$response = [
 				'status'=>true,
 				'code'=>0,
-				'logo_img'=>'https://dsgmoon.net/Thumbnail/Potrait/en-us/RichGaming.png',
-				'game_list'=>$game
+				'message' => "Ticket has Generated with transaction ID : ".$transaction_id
 			];
 
 			return response()->json($response);
@@ -131,7 +121,6 @@ class LotteryTicketTransactionController extends Controller
 				'code'=> $error_code,
 				'error_msg'=>$this->error_mapping[$error_code]??'Invalid Request',
 				'error_desp'=>$e->getMessage(),
-				'ticket_id'=> isset($lsm_response['lsm_id']) ? 'lsm-'.$lsm_response['lsm_id'] : ''
 			];
 
 			return response()->json(
