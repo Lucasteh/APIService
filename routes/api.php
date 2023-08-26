@@ -22,11 +22,11 @@ Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
 });
 
 Route::middleware('auth:sanctum')->group(function () {
-    Route::get('/game-list',[GameListController::class,'GetGameList']);
     Route::post('/create-lottery-transaction', [LotteryTicketTransactionController::class,'CreateLotteryTicket']);
 });
 
-// Route::get('/get-lottery-transaction-list', [LotteryTicketTransactionController::class,'GetTransactionList']);
+Route::get('/get-lottery-transaction-list', [LotteryTicketTransactionController::class,'GetTransactionList']);
+
 
 // Route::post('/auth/register', [AuthController::class, 'createUser']);
 Route::post('/auth/login', [AuthController::class, 'loginUser']);

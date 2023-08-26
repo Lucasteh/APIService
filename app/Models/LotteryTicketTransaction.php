@@ -14,9 +14,11 @@ class LotteryTicketTransaction extends Model
 
     protected $fillable = ['trx_id','game_id','amount','ticket_date','draw_date','status','created_by'];
    
-    static function getLotteryList($params){
+    static function getTransactionList($params){
         
-        $select = DB::table('lottery_ticket_transaction')->where('status',1);
+        $select = DB::table('lottery_ticket_transactions')
+                        ->select('trx_id as transaction_id','game_id as game_id','amount as amount',DB::raw('date(ticket_date) as ticket_date'),DB::raw('date(draw_date) as draw_date'))
+                        ->where('status',1);
 
         if(!empty($params['user_id'])){
             $select->where('created_by',$params['user_id']);
@@ -26,6 +28,11 @@ class LotteryTicketTransaction extends Model
         }
         if(!empty($params['draw_date'])){
             $select->where('draw_date',$params['draw_date']);
+        }
+
+        if(!empty($params['from_date']) && !empty($params['to_date'])){
+            $select->where('ticket_date','>=',$params['from_date'])
+                    ->where('ticket_date', '<=',$params['to_date']);
         }
 
         $data = $select->get();

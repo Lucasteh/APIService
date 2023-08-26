@@ -18,6 +18,6 @@ Route::get('/', function () {
     return view('welcome');
 });
 
-Route::get('/sales_report', [ReportController::class,'SalesReport']);
-Route::get('/daily_report', [ReportController::class,'DailyReport']);
+Route::get('/sales_report', [ReportController::class,'SalesGameReport']);
+Route::get('/daily_report', [ReportController::class,'DailyTransactionReport']);
 

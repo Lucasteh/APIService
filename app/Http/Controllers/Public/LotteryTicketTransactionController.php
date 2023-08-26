@@ -22,18 +22,10 @@ class LotteryTicketTransactionController extends Controller
 			"name"=>"Get Transaction List",
 			"url"=>"/get-transaction-list",
 			"method"=>"post",
-			"description"=>"for user to get game report",
+			"description"=>"get transaction list",
 			"validation"=>[
 				"header"=>[],
-				"body"=>[
-					// "period"=>"required",
-					// "m_id"=>"required",
-					// "a_id"=>"required",
-					// "currency"=>"required",
-					// "mu_membercode"=>"nullable",
-					// "game_code"=>"nullable",
-					// "page"=>"nullable|integer|min:1"
-				]
+				"body"=>[]
 			],
 			"response"=>'{"status": true,"code": 0,"data":{
 				"items":[
@@ -48,18 +40,13 @@ class LotteryTicketTransactionController extends Controller
 			}'
 		];
         try {
-			// validate input 
-        	// $validator = Validator::make($request->all(), Docs::cleanUpRule($ApiDocs));
-            
-            // $lottery_list = LotteryTicketTransaction::getTransactionList($request->all());
-            
-			$game = Gamelist::getGameList();
+            $lottery_list = LotteryTicketTransaction::getTransactionList($request->all());
 
 			$response = [
 				'status'=>true,
 				'code'=>0,
 				'logo_img'=>'https://dsgmoon.net/Thumbnail/Potrait/en-us/RichGaming.png',
-				'game_list'=>$game
+				'transaction_list'=>$lottery_list
 			];
 
 			return response()->json($response);
@@ -82,10 +69,10 @@ class LotteryTicketTransactionController extends Controller
 
     public function CreateLotteryTicket(Request $request){
         $ApiDocs=[
-			"name"=>"Get Transaction List",
-			"url"=>"/get-transaction-list",
+			"name"=>"Create Transaction",
+			"url"=>"/create-lottery-transaction",
 			"method"=>"post",
-			"description"=>"for user to get game report",
+			"description"=>"create lottery transaction",
 			"validation"=>[
 				"header"=>[],
 				"body"=>[
