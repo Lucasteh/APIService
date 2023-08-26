@@ -9,23 +9,19 @@
     <div class="row">
       <div class="col-lg-12" style="margin-top: 15px ">
         <div class="pull-left">
-          <h2>{{title}}</h2>
-          <h4>{{date}}</h4>
-        </div>
-        <div class="pull-right">
-          <a class="btn btn-primary" href="{{route('users.index',['download'=>'pdf'])}}">Download PDF</a>
+          <h2>{{$title}}</h2>
         </div>
       </div>
     </div><br>
     <table class="table table-bordered">
       <tr>
-        <th>Name</th>
-        <th>Email</th>
+        <th>Game ID</th>
+        <th>Total</th>
       </tr>
-      @foreach ($user as $user)
+      @foreach ($game_transactions as $transaction)
       <tr>
-        <td>{{ $user->name }}</td>
-        <td>{{ $user->email }}</td>
+        <td>{{ $transaction->game_id }}</td>
+        <td>{{ $transaction->total }}</td>
       </tr>
       @endforeach
     </table>

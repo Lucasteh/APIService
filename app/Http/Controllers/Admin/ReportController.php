@@ -5,26 +5,28 @@ namespace App\Http\Controllers\Admin;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use App\Models\LotteryTicketTransaction;
+use Illuminate\Support\Facades\Validator;
 use Carbon\Carbon;
 use PDF;
 
 class ReportController extends Controller
 {
     public function SalesGameReport(Request $request){
-    
-	    // $user = User::get();
+
+        $report = LotteryTicketTransaction::getGameTransactionList();
 
 	    $data = [
-	            'title' => 'How To Create PDF File Using DomPDF In Laravel 9 - Techsolutionstuff',
-	            'date' => date('d/m/Y'),
-	            'users' => $users
+	            'title' => 'Total Sales Transaction',
+	            'game_transactions' => $report
 	    ];
 
 	    if($request->has('download'))
 	    {
-	        $pdf = PDF::loadView('index',$data);
-	        return $pdf->download('users_pdf_example.pdf');
-	    } 
+	        $pdf = PDF::loadView('sales_report',$data);
+	        return $pdf->download('total_sales_report.pdf');
+	    }
+
+        return view('welcome');
     }
 
     public function DailyTransactionReport(Request $request){
@@ -34,12 +36,12 @@ class ReportController extends Controller
             'to_date' =>'required|date_format:d-m-Y|after_or_equal:from_date'
         ];
 
-        try{
-            $data = $request->validate($rules);
+        $data = Validator::make($request->all(),$rules);
 
-        }catch(\Exception $e){
-            dd($e);
+        if ($data->fails()) {
+             return  redirect()->back()->withInput($request->input())->withErrors($data->errors());
         }
+
 
         $from_date = Carbon::createFromFormat('d-m-Y',$data['from_date'])->format('Y-m-d').' 00:00:00';
         $to_date = Carbon::createFromFormat('d-m-Y',$data['to_date'])->format('Y-m-d').' 00:00:00';

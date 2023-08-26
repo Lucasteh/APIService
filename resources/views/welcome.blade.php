@@ -24,41 +24,66 @@
     </head>
     <body class="antialiased">
         <div class="col-12">
-            <div class="col-6 col-lg-6">
-                <form action="/daily_report">
-                <input type="hidden" name="download" value="pdf"/>
-                <div class="p-1">
-                        <div class="col-12 flex items-center">
-                            <div class="ml-4 text-lg leading-7 font-semibold">
-                                <h1>Daily Transaction Report</h1></div>
-                            <div class="ml-12">
-                            </div>
-                        </div>
-                        <div class="col-12 flex">
-                            <div class="col-lg-6">
-                                <h5>From Date</h5>
-                                <div class='input-group date' id='datetimepicker'>
-                                    <input type='text' name="from_date" class="form-control" />
-                                    <span class="input-group-addon">
-                                    <span class="glyphicon glyphicon-calendar"></span>
-                                    </span>
+            @if($errors->any())
+                <h4 class="error text-center" style="color:red">{{$errors->first()}}</h4>
+            @endif
+            <div class="col-6 col-lg-6 p-1">
+
+                <div class="col-11 col-lg-11" style="border: 1px solid black;">
+                    <form action="/daily_report">
+                    <input type="hidden" name="download" value="pdf"/>
+                    <div class="p-1">
+                            <div class="col-12 flex items-center">
+                                <div class="ml-4 text-lg leading-7 font-semibold">
+                                    <h1>Daily Transaction Report</h1></div>
+                                <div class="ml-12">
                                 </div>
                             </div>
-                            <div class="col-lg-6">
-                                <h5>To Date</h5>
-                                <div class='input-group date' id='datetimepicker'>
-                                    <input type='text' name="to_date" class="form-control" />
-                                    <span class="input-group-addon">
-                                    <span class="glyphicon glyphicon-calendar"></span>
-                                    </span>
+                            <div class="col-12 flex">
+                                <div class="col-lg-6">
+                                    <h5>From Date</h5>
+                                    <div class='input-group date' id='datetimepicker'>
+                                        <input type='text' name="from_date" value="{{old('from_date')}}" class="form-control" />
+                                        <span class="input-group-addon">
+                                        <span class="glyphicon glyphicon-calendar"></span>
+                                        </span>
+                                    </div>
+                                </div>
+                                <div class="col-lg-6">
+                                    <h5>To Date</h5>
+                                    <div class='input-group date' id='datetimepicker'>
+                                        <input type='text' name="to_date" value="{{old('to_date')}}" class="form-control" />
+                                        <span class="input-group-addon">
+                                        <span class="glyphicon glyphicon-calendar"></span>
+                                        </span>
+                                    </div>
                                 </div>
                             </div>
-                        </div>
-                        <div style="text-align:center; margin:10px;">
-                            <input class="btn btn-info" type="submit" value="Generate Report" text="Generate Report"/>
-                        </div>
+                            <div style="text-align:center; margin:10px;">
+                                <input class="btn btn-info" type="submit" value="Generate Report" text="Generate Report"/>
+                            </div>
+                    </div>
+                    </form>
                 </div>
-                </form>
+            </div>
+            <div class="col-6 col-lg-6 p-1">
+
+                <div class="col-11 col-lg-11" style="border: 1px solid black;">
+                    <form action="/sales_report">
+                    <input type="hidden" name="download" value="pdf"/>
+                    <div class="p-1">
+                            <div class="col-12 flex items-center">
+                                <div class="ml-4 text-lg leading-7 font-semibold">
+                                    <h1>Sales Transaction Report</h1></div>
+                                <div class="ml-12">
+                                </div>
+                            </div>
+                            <div style="text-align:center; margin:10px;">
+                                <input class="btn btn-info" type="submit" value="Generate Report" text="Generate Report"/>
+                            </div>
+                    </div>
+                    </form>
+                </div>
             </div>
         </div>
     </body>

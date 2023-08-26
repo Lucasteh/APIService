@@ -40,6 +40,17 @@ class LotteryTicketTransaction extends Model
         return json_decode(json_encode($data,true));
     }
 
+    static function getGameTransactionList(){
+        $select = DB::table('lottery_ticket_transactions')
+                        ->select('game_id',DB::raw('count(id) as total'))
+                        ->where('status',1)
+                        ->groupBy('game_id');
+
+        $data = $select->get();
+
+        return json_decode(json_encode($data,true));
+    }
+
     static function createLotteryTransaction($params,$admin_user_id){
 
         do{
