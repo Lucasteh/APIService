@@ -37,9 +37,11 @@ class ReportController extends Controller
         ];
 
         $data = Validator::make($request->all(),$rules);
-
+        
         if ($data->fails()) {
              return  redirect()->back()->withInput($request->input())->withErrors($data->errors());
+        }else{
+            $data = $request->all();
         }
 
 
